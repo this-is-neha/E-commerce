@@ -1,28 +1,12 @@
 
-const userRoutes=require("express").Router();
-const authCtrl=require("../auth/auth.controller")
-
-userRoutes.route('./')
-.post((req,res,next)=>{
-
-})
-
-.get((req,res,next)=>{
-
-})
-
-userRoutes.route('/:id')
-.get((req,res,next)=>{
-
-})
+const userRoutes=require('express').Router()
+const auth=require('../../middleware/auth.middleware');
+const allowRole=require("../../middleware/rbac.middleware");
+const userCtrl = require("./user.controller");
+userRoutes.route('/')
 
 
-.patch((req,res,next)=>{
+.get(auth,allowRole(['admin']),userCtrl.index)
 
-})
-
-.delete((req,res,next)=>{
-
-})
 
 module.exports=userRoutes
