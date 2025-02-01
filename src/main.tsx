@@ -8,19 +8,31 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import store,{persistor} from "./config/store.config"
 import { LoadingComponent } from "./components/common";
-
+import { AuthProvider } from "./context/auth.context";
+import {BrandProvider} from "./context/brand-context";
+import  {CartProvider}  from "./context/cart.context"
 const htmlRoot: HTMLElement=document.getElementById('root') as HTMLElement;
 
 const RootElement=ReactDOM.createRoot(htmlRoot)
 
 RootElement.render(
   <React.StrictMode>
+
+   <BrandProvider>
+ 
+   <CartProvider>
    <Provider store ={store}>
     <PersistGate loading={<LoadingComponent/>} persistor={persistor}>
    <BrowserRouter>
-  <RouterConfig/>
+
+  <AuthProvider> <RouterConfig/> </AuthProvider>
+ 
+  
    </BrowserRouter>
    </PersistGate>
-   </Provider>
+   </Provider></CartProvider>
+ 
+   </BrandProvider>
+   
 </React.StrictMode>
 )

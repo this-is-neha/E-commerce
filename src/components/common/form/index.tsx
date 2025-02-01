@@ -1,5 +1,7 @@
 import { useController } from "react-hook-form"
-import Select from 'react-select';
+
+import { Controller } from 'react-hook-form';
+
 interface TextInputProps {
   type?: string,
   name: string,
@@ -7,6 +9,14 @@ interface TextInputProps {
   required: boolean,
   control: any
 
+}
+
+interface CheckboxFieldProps {
+  control: any;
+  name: string;
+  label: string;
+  checked:boolean
+  
 }
 export const TextInputField = ({ control, type = "text", name, errMsg = null, required = true }: TextInputProps) => {
 
@@ -59,8 +69,8 @@ export const SelectComponent = ({ errMsg = null, name, control, options = [] }: 
               {opt.value}
             </option>
           ))}
-        <option value="seller">Seller</option>
-        <option value="cuustomer">Customer</option>
+        {/* <option value="seller">Seller</option>
+        <option value="cuustomer">Customer</option> */}
       </select>
       <span className="text-red-500">{errMsg}</span>
 
@@ -71,17 +81,82 @@ export const SelectComponent = ({ errMsg = null, name, control, options = [] }: 
 
 
 export const SelectOptionComponent = ({ errMsg = null, name, control, options = [] }: { errMsg?: string | null, options?: any[], name: string, control: any }) => {
-  console.log(errMsg)
+  return (
+      <div>
+          <Controller
+              name={name}
+              control={control}
+              render={({ field }) => (
+                  <select
+                      {...field}
+                      className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none"
+                  >
+                      {options.map((option, index) => (
+                          <option key={index} value={option.value}>{option.label}</option>
+                      ))}
+                  </select>
+              )}
+          />
+          <span className="text-red">{errMsg}</span>
+      </div>
+  );
+
+
+};
+
+
+
+export const CheckboxField: React.FC<CheckboxFieldProps> = ({ control, name, label }) => {
   const { field } = useController({
-    control: control,
-    name: name
-  })
+    name,
+    control,
+  });
 
   return (
-    <>
-      <Select options={options} {...field} isClearable={true} />
-      <span className="text-red-500">{errMsg}</span>
+    <div className="flex items-center">
+      <input
+        id={name}
+        type="checkbox"
+        {...field}
+        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+      />
+      <label htmlFor={name} className="ml-2 block text-sm text-gray-900">
+        {label}
+      </label>
+    </div>
+  );
+};
 
-    </>
-  )
+
+
+ interface FileInputFieldProps {
+  control: any;
+  name: string;
+  errMsg?: string | null;
+  multiple?: boolean; 
 }
+export const FileInputField: React.FC<FileInputFieldProps> = ({
+  control,
+  name,
+  errMsg = null,
+  multiple = false, 
+}) => {
+  return (
+    <Controller
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <div>
+          <input
+            type="file"
+            onChange={(e) => field.onChange(e.target.files)}
+            multiple={multiple}
+            accept="image/*"
+            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-600 hover:file:bg-indigo-100"
+          />
+          {errMsg && <p className="text-red-600">{errMsg}</p>}
+        </div>
+      )}
+    />
+  );
+};

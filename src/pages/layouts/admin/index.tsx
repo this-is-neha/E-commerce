@@ -11,72 +11,15 @@ import { FaHome } from 'react-icons/fa'
 import { HiBars3 } from 'react-icons/hi2'
 import { FaImages } from 'react-icons/fa6'
 import { HiXMark } from 'react-icons/hi2'
+import React from 'react'
 
 const AdminLayout=()=>{
     const [mobileMenuOpen,setMobileMenuOpen]=useState(false)
     return <>
-    <header className="bg-gray-800">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
-        <div className="flex lg:flex-1">
-          <a href="#" className="-m-1.5 p-1.5 justify-left text-white">
-            Logo
-          </a>
-        </div>
-        <div className="flex lg:hidden">
-          <button
-            type="button"
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
-            onClick={() => setMobileMenuOpen(true)}
-          >
-            <span className="sr-only">Open main menu</span>
-            <HiBars3 className="h-6 w-6 text-white" aria-hidden="true" />
-          </button>
-        </div>
-      
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-800 dark:text-white ">
-            Logout <span aria-hidden="true">&rarr;</span>
-          </a>
-        </div>
-      </nav>
-      <Dialog className="lg:hidden bg-gray-800" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
-        <div className="fixed inset-0 z-10" />
-        <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-gray-800 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-          <div className="flex items-center justify-between">
-            <a href="#" className="-m-1.5 p-1.5 text-white">
-              Logo
-            </a>
-            <button
-              type="button"
-              className="-m-2.5 rounded-md p-2.5 text-white"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <span className="sr-only">Close menu</span>
-              <HiXMark className="h-6 w-6" aria-hidden="true" />
-            </button>
-          </div>
-          <div className="mt-6 flow-root">
-            <div className="-my-6 divide-y divide-gray-500/10">
-              <div className="space-y-2 py-6">
-              
-               
-              </div>
-              <div className="py-6">
-                <a
-                  href="#"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white hover:bg-gray-50"
-                >
-                  Logout
-                </a>
-              </div>
-            </div>
-          </div>
-        </DialogPanel>
-      </Dialog>
-    </header>
+ 
 
     <div className="flex">
-  <div className="flex h-screen w-20 flex-col justify-between border-e bg-gray-800">
+  {/* <div className="flex h-screen  flex-col justify-between  bg-gray-800">
     <div>
 
       <div className="border-t border-gray-100">
@@ -86,8 +29,6 @@ const AdminLayout=()=>{
               href="#"
               className="t group relative flex justify-center rounded bg-blue-50 px-86 py-1.5 text-blue-700"
             >
-            
-
               <FaGear/>
 
               <span
@@ -221,7 +162,7 @@ const AdminLayout=()=>{
     <div className="sticky inset-x-0 bottom-0 border-t border-gray-100 bg- p-2">
      
     </div>
-  </div>
+  </div> */}
 
   <div className="flex h-screen w-full flex-col justify-between px-20 py-10">
  <Outlet/>

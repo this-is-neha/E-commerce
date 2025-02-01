@@ -1,114 +1,122 @@
-import { useContext, useEffect } from "react";
-import { NavLink, useNavigate,  } from "react-router-dom"
-// import { useState } from "react";
-import{ useForm} from "react-hook-form" 
+import { useContext, useEffect, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import { TextInputField } from "../../../components/common/form";
-import  axiosInstance  from "axios";
-import {toast} from "react-toastify"
-import * as Yup from "yup"
+import axiosInstance from "axios";
+import { toast } from "react-toastify";
+import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import AuthContext from "../../../context/auth.context";
-// import { setCookie } from "../../../utilities/helpers";
+import {AuthContext} from "../../../context/auth.context";
+import { FooterComponent, HeaderComponent} from "../../../components/common";
+import React from "react";
 
+const LoginPage = () => {
+  const auth = useContext(AuthContext);
+  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
 
-const LoginPage=()=>{
-const auth =useContext(AuthContext)
+  const loginDto = Yup.object({
+    email: Yup.string().email().required("Email is compulsory"),
+    password: Yup.string().required()
+  });
 
-const navigate=useNavigate();
-const loginDto=Yup.object({
-  email:Yup.string().email().required("Email is compulsory"),
-  password:Yup.string().required()
-})
-console.log('LoginAuth',auth)
-  const {control,handleSubmit,formState:{errors}}=useForm({
-   
-   resolver:yupResolver(loginDto),
-    defaultValues:{
-      email:"",
-      password:""
+  const { control, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(loginDto),
+    defaultValues: {
+      email: "",
+      password: ""
     }
   });
 
-  const  submitForm=async (data:any)=>{
-    try{
-const response:any= await axiosInstance.post('/auth/login',data)
+  const submitForm = async (data: any) => {
+    try {
+      const response = await axiosInstance.post('http://localhost:9004/auth/login', data);
 
-localStorage.setItem("accesstoken",response.result.token.accesstoken)
-localStorage.setItem("refreshtoken",response.result.token.refreshtoken)
+      localStorage.setItem("accessToken", response.data.result.token.accessToken);
+      localStorage.setItem("refreshToken", response.data.result.token.refreshToken);
 
-auth.loggedInUser=response.result.detail;
+      auth.loggedInUser = response.data.result.detail;
 
-toast.success("Welcome to "+response.result.detail.role+"Panel!")
-navigate("/"+response.result.detail.role)
-}
-catch(exception:any){
-  console.log(exception)
-  toast.error(exception.message)
-}
-
-  }
-
-  useEffect(()=>{
-    if (auth.loggedInUser){
-    toast.info("You are already logged in")
-    navigate("/"+auth.loggedInUser.role)
+      toast.success("Welcome to " + response.data.result.detail.role + " Panel!");
+      setShowModal(true);
+      setTimeout(() => {
+        setShowModal(false);
+        if (response.data.result.detail.role === "admin") {
+          navigate("/admin/page");
+        } else {
+          navigate("/");
+        }
+      }, 3000);
+    } catch (exception: any) {
+      console.log(exception);
+      toast.error(exception.response?.data?.message || "Cannot login at this moment!");
     }
-  },[auth])
-  
-    
+  };
 
- 
-    return (<>
+  useEffect(() => {
+    if (auth.loggedInUser) {
+      toast.info("You are already logged in");
+      // navigate("/" + auth.loggedInUser.role+"/page");
+    }
+  }, [auth, navigate]);
 
+  const closeModal = () => {
+    setShowModal(false);
+    // navigate('/' + auth.loggedInUser.role+"/page");
+  };
 
-<div className="flex min-h-full flex-1 flex-col justify-center px-6 py-20 lg:px-8">
+  return (
+    <>
+      
+      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-20 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm ">
-          <img
-            className="mx-auto h-10 w-auto mt-10"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-            alt="Your Company"
-          />
+
+
+          <i className="fas fa-user-plus px-40 text-blue-500 text-7xl"></i>
+          <br />
+          <br />
+
           <h2 className="mt-14 text-center text-4xl font-bold leading-9 tracking-tight text-gray-900">
             Sign in to your account
           </h2>
         </div>
 
         <div className="mt-14 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" onSubmit={handleSubmit(submitForm)} >
-        
-              <label htmlFor="email" className="block text-m font-medium leading-6 text-gray-900">
+          <form className="space-y-6" onSubmit={handleSubmit(submitForm)}>
+            <div>
+              <label htmlFor="email" className="block text-xl font-medium leading-6 text-gray-900">
                 Email address
               </label>
               <div className="mt-2">
                 <TextInputField
-                control={control}
-                type="email"
-                name="email"
-                errMsg={errors?.email?.message?"Invalid Email":""}
-                required={true}
+                  control={control}
+                  type="email"
+                  name="email"
+                  errMsg={errors?.email?.message || ""}
+                  required={true}
                 />
+              </div>
             </div>
 
             <div>
-              <div className="flex items-center justify-between  ">
-                <label htmlFor="password" className="block text-m font-medium leading-6 text-gray-900">
-                Password
+              <div className="flex items-center justify-between">
+                <label htmlFor="password" className="block text-xl font-medium leading-6 text-gray-900">
+                  Password
                 </label>
                 <div className="text-sm">
-                  <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                  <a href="#" className="font-semibold text-m text-indigo-600 hover:text-indigo-500">
                     Forgot password?
                   </a>
                 </div>
               </div>
               <div className="mt-2">
-              
-                 <TextInputField
-                 control={control}
-                 type="password"
-                 name="password"
-                 errMsg={errors?.password?.message?"Password Email":""}
-                 required={true}
-                 />
+                <TextInputField
+                  control={control}
+                  type="password"
+                  name="password"
+                  errMsg={errors?.password?.message || ""}
+                  required={true}
+                />
               </div>
             </div>
 
@@ -125,15 +133,30 @@ catch(exception:any){
           <p className="mt-10 text-center text-sm text-gray-500">
             Not a member?{' '}
             <NavLink to="/register" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-          Register your account
+              Register your account
             </NavLink>
           </p>
         </div>
       </div>
+      <FooterComponent />
 
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+          <div className="bg-white p-8 rounded-lg shadow-lg">
+            <p className="text-xl font-medium mb-4">Login Successful!</p>
+            <p className="text-gray-700">You have been successfully logged in.</p>
+            <button
+              className="bg-blue-600 text-white px-4 py-2 rounded-md mt-4 inline-block"
+              onClick={closeModal}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
 
- 
+export default LoginPage;
 
-    </>)
-}
-export default LoginPage

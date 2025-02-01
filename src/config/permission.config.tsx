@@ -2,6 +2,7 @@
 // import AuthContext from "../context/auth.context";
 // import { toast } from "react-toastify";
 // import { Navigate } from "react-router-dom";
+
 // const PermissionConfig=({children:Children,allowAccess}:any)=>{
 //    const auth=useContext(AuthContext)
 // console.log("auth",auth)   

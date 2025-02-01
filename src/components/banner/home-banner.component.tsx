@@ -6,9 +6,13 @@ import banner2 from "../../assets/banner2.jpg"
 import banner3 from "../../assets/banner3.png"
 import banner4 from "../../assets/banner4.jpg"
 import banner5 from "../../assets/banner5.jpg"
+import banner11 from "../../assets/banner11.webp"
+import banner12 from "../../assets/banner12.webp"
+import banner13 from "../../assets/banner13.webp"
 import { useSelector } from "react-redux"
 import {useState,useEffect} from "react"
 import axiosInstance from "../../config/axios.config"
+import React from "react"
 const HomeBannerComponent =()=>{
  
   var settings = {
@@ -58,19 +62,19 @@ setData(response.result)
 }
   
        <div>
-       <img src={banner1} className="w-full h-full"/>
+       <img src={banner11} className="w-full h-full"/>
       </div>
       <div>
-      <img src={banner2}/>
+      <img src={banner12} className="w-full h-full"/>
       </div>
       <div>
-      <img src={banner3}/>
+      <img src={banner13 } className="w-full h-full"/>
       </div>
       <div>
-      <img src={banner4}/>
+      <img src={banner4} className="w-full h-full"/>
       </div>
       <div>
-      <img src={banner5}/>
+      <img src={banner5} className="w-full h-full"/>
       </div>   
 
       

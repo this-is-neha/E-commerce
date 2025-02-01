@@ -3,7 +3,7 @@ const PaginationComponent=({
     pagination={
        
       currentPage:1,
-        totalPages:1
+        totalPages:5
     },
     fetchCall,
 }:{pagination:{currentPage:number ,totalPages:number }, fetchCall:Function})=>{
